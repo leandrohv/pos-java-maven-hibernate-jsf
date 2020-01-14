@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3c.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">  -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+
+<h:body>
+
+	<h:form>
+		<p:breadCrumb>
+			<p:menuitem value="" />
+			<p:menuitem value="Página JSF" action="index.jsf" />
+		</p:breadCrumb>
+	</h:form>
+
+	<h:form id="formulario">
+		<h:outputLabel>Cadastro de telefones do usuário</h:outputLabel>
+
+		<h:messages showSummary="false" showDetail="true" id="msg" />
+
+		<h:panelGrid columns="2">
+
+			<h:outputLabel>Usuário: </h:outputLabel>
+			<h:outputText value="#{telefoneManagedBean.user.nome}" />
+
+			<h:outputLabel>Número: </h:outputLabel>
+			<h:inputText value="#{telefoneManagedBean.telefone.numero}" />
+
+			<h:outputLabel>Tipo: </h:outputLabel>
+			<h:selectOneMenu value="#{telefoneManagedBean.telefone.tipo}">
+				<f:selectItem itemValue="RESIDENCIAL" />
+				<f:selectItem itemValue="COMERCIAL" />
+				<f:selectItem itemValue="CELULAR" />
+			</h:selectOneMenu>
+
+		</h:panelGrid>
+
+		<br />
+		<br />
+		<h:commandButton value="Salvar" action="#{telefoneManagedBean.salvar}" />
+
+		<h:form id="formTelefones">
+			<h:dataTable value="#{telefoneManagedBean.user.telefoneUsers}"
+				cellpadding="5" var="telefone" id="tableFone">
+				<f:facet name="header">Lista de telefones</f:facet>
+				<h:column>
+					<f:facet name="header">Id</f:facet>
+					<h:outputText value="#{telefone.id}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Número</f:facet>
+					<h:outputText value="#{telefone.numero}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Tipo</f:facet>
+					<h:outputText value="#{telefone.tipo}" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Remover</f:facet>
+					<h:commandLink immediate="true"
+						action="#{telefoneManagedBean.removerTelefone}"
+						style="text-align:center; display:block;" id="btnRemover">
+						<h:graphicImage url="resources/img/delete.png" width="24"
+							height="24" />
+						<f:setPropertyActionListener value="#{telefone}"
+							target="#{telefoneManagedBean.telefone}" />
+						<f:ajax execute="btnRemover" render="@form :formulario:msg" />
+					</h:commandLink>
+				</h:column>
+
+			</h:dataTable>
+		</h:form>
+
+	</h:form>
+</h:body>
+
+</html>
